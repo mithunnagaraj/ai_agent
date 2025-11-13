@@ -176,6 +176,189 @@
         "user_id": "user"
       },
       "creation_timestamp": 1763068725.24386
+    },
+    {
+      "eval_id": "lights",
+      "conversation": [],
+      "session_input": {
+        "app_name": "home_automation_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1763069808.600398
+    },
+    {
+      "eval_id": "lights living room",
+      "conversation": [
+        {
+          "invocation_id": "e-3851893c-71de-4808-b1ca-bc92ba086def",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Turn on the lights in the bedroom"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "I couldn't find a device named \"bedroom_lights\". Please check the device name or list all devices if you're unsure."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "smart_home_assistant",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-0133f7b2-4eb6-42cf-beca-cdabf8b51a72",
+                        "args": {
+                          "device_id": "bedroom_lights",
+                          "action": "on"
+                        },
+                        "name": "control_device"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "smart_home_assistant",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-0133f7b2-4eb6-42cf-beca-cdabf8b51a72",
+                        "name": "control_device",
+                        "response": {
+                          "success": false,
+                          "error": "Device bedroom_lights not found"
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1763069824.837818
+        },
+        {
+          "invocation_id": "e-6dee91ad-1a53-46b7-bd9f-4171a0120b43",
+          "user_content": {
+            "parts": [
+              {
+                "text": "turn on the lights"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "Which room are you referring to, and what lights would you like to turn on?"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {},
+          "creation_timestamp": 1763069837.176929
+        },
+        {
+          "invocation_id": "e-b332641e-9ab5-48a8-a23e-5642055a8c20",
+          "user_content": {
+            "parts": [
+              {
+                "text": "what all rooms you have"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "I can control devices in various rooms, but I need you to specify which room you're referring to. I can't list all the rooms in your house. Can you tell me which room you'd like to control? For example, you could say \"Turn on the lights in the living room\" or \"Set the temperature in the bedroom.\""
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {},
+          "creation_timestamp": 1763069847.421337
+        },
+        {
+          "invocation_id": "e-a7fdffb2-1c0d-4033-916a-dd132ce82faf",
+          "user_content": {
+            "parts": [
+              {
+                "text": "Turn on the lights in the living room"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "I've turned on the lights in the living room."
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "invocation_events": [
+              {
+                "author": "smart_home_assistant",
+                "content": {
+                  "parts": [
+                    {
+                      "function_call": {
+                        "id": "adk-aef03f32-7f75-4f26-aadc-e1267a5f4cdc",
+                        "args": {
+                          "action": "on",
+                          "device_id": "living_room_lights"
+                        },
+                        "name": "control_device"
+                      }
+                    }
+                  ],
+                  "role": "model"
+                }
+              },
+              {
+                "author": "smart_home_assistant",
+                "content": {
+                  "parts": [
+                    {
+                      "function_response": {
+                        "id": "adk-aef03f32-7f75-4f26-aadc-e1267a5f4cdc",
+                        "name": "control_device",
+                        "response": {
+                          "success": true,
+                          "device": "Living Room Lights",
+                          "action": "on",
+                          "status": "Light turned on"
+                        }
+                      }
+                    }
+                  ],
+                  "role": "user"
+                }
+              }
+            ]
+          },
+          "creation_timestamp": 1763069857.671438
+        }
+      ],
+      "session_input": {
+        "app_name": "home_automation_agent",
+        "user_id": "user"
+      },
+      "creation_timestamp": 1763069881.698808
     }
   ],
   "creation_timestamp": 1763068715.342058

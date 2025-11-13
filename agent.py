@@ -15,15 +15,16 @@
 import asyncio
 import os
 import argparse
+import logging
 from google.adk.agents import Agent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
 from google.adk.tools import google_search
 from google.genai import types
 
-APP_NAME="google_search_agent"
-USER_ID="user1234"
-SESSION_ID="1234"
+APP_NAME = "google_search_agent"
+USER_ID = "user1234"
+SESSION_ID = "1234"
 
 
 root_agent = Agent(
@@ -32,26 +33,36 @@ root_agent = Agent(
     description="Agent to answer questions using Google Search.",
     instruction="I can answer your questions by searching the internet. Just ask me anything!",
     # google_search is a pre-built tool which allows the agent to perform Google searches.
-    tools=[google_search]
+    tools=[google_search],
 )
+
 
 # Session and Runner
 async def setup_session_and_runner():
     session_service = InMemorySessionService()
-    session = await session_service.create_session(app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID)
-    runner = Runner(agent=root_agent, app_name=APP_NAME, session_service=session_service)
+    session = await session_service.create_session(
+        app_name=APP_NAME, user_id=USER_ID, session_id=SESSION_ID
+    )
+    runner = Runner(
+        agent=root_agent, app_name=APP_NAME, session_service=session_service
+    )
     return session, runner
+
 
 # Agent Interaction
 async def call_agent_async(query):
-    content = types.Content(role='user', parts=[types.Part(text=query)])
+    content = types.Content(role="user", parts=[types.Part(text=query)])
     session, runner = await setup_session_and_runner()
-    events = runner.run_async(user_id=USER_ID, session_id=SESSION_ID, new_message=content)
+    events = runner.run_async(
+        user_id=USER_ID, session_id=SESSION_ID, new_message=content
+    )
 
     async for event in events:
         if event.is_final_response():
             final_response = event.content.parts[0].text
             print("Agent Response: ", final_response)
+
+
 # Note: In Colab, you can directly use 'await' at the top level.
 # If running this code as a standalone Python script, you'll need to use asyncio.run() or manage the event loop.
 def run_agent(query):
@@ -66,13 +77,44 @@ def run_agent(query):
 
 def main():
     parser = argparse.ArgumentParser(description="Run the my_agent agent")
-    parser.add_argument("--query", "-q", default="what's the latest ai news?", help="Query to send to the agent")
-    parser.add_argument("--api-key", help="Provide a Google API key to use the Google AI API (will set GOOGLE_API_KEY env var)")
-    parser.add_argument("--project", help="Google Cloud project id (for Vertex AI backend)")
-    parser.add_argument("--location", help="Google Cloud location (for Vertex AI backend)")
-    parser.add_argument("--dry-run", action="store_true", help="Do not call external APIs; simulate an agent response")
+    parser.add_argument(
+        "--query",
+        "-q",
+        default="what's the latest ai news?",
+        help="Query to send to the agent",
+    )
+    parser.add_argument(
+        "--api-key",
+        help="Provide a Google API key to use the Google AI API (will set GOOGLE_API_KEY env var)",
+    )
+    parser.add_argument(
+        "--project", help="Google Cloud project id (for Vertex AI backend)"
+    )
+    parser.add_argument(
+        "--location", help="Google Cloud location (for Vertex AI backend)"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Do not call external APIs; simulate an agent response",
+    )
+    parser.add_argument(
+        "--log_level",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR"],
+        default="INFO",
+        help="Set the logging level",
+    )
 
     args = parser.parse_args()
+
+    # Configure logging
+    logging.basicConfig(
+        level=getattr(logging, args.log_level),
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+    )
+    logger = logging.getLogger(__name__)
+    logger.info(f"Starting agent with log level: {args.log_level}")
 
     # If provided, set environment variables used by the client library
     if args.api_key:
@@ -84,7 +126,9 @@ def main():
 
     if args.dry_run:
         print("[dry-run] Agent would run with query:\n", args.query)
-        print("[dry-run] Skipping external API calls. Example simulated response:\nAgent Response: This is a dry-run simulated response for the query.")
+        print(
+            "[dry-run] Skipping external API calls. Example simulated response:\nAgent Response: This is a dry-run simulated response for the query."
+        )
         return
 
     run_agent(args.query)

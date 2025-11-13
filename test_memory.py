@@ -1,107 +1,64 @@
 #!/usr/bin/env python3
 """
-Simple test script to demonstrate persistent memory across sessions.
+Simple test guide to demonstrate persistent memory across sessions.
 This shows how your agent will remember your name between runs.
+
+To use this guide:
+1. Set your API key: export GOOGLE_API_KEY='your-key'
+2. Run the main memory demo: python3 memory_mgmt.py
+3. Stop and run again - it should remember your name!
 """
 
-import asyncio
-import sys
 import os
-
-# Add the parent directory to Python path so we can import from my_agent
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from my_agent.memory_mgmt import (
-    session_service,
-    memory_service,
-    APP_NAME,
-    USER_ID,
-    PERSISTENT_SESSION_ID,
-    auto_memory_agent,
-    auto_runner,
-    run_session,
-    create_auto_save_callback,
-)
-from google.adk.agents import LlmAgent
-from google.adk.models.google_llm import Gemini
-from google.adk.runners import Runner
-from google.adk.tools import preload_memory
-from google.genai import types
+import sys
 
 
-async def test_persistent_memory():
-    """Test that demonstrates persistent memory across script runs."""
+def main():
+    """Main function that explains how to test persistent memory."""
 
-    print("🧪 PERSISTENT MEMORY TEST")
+    print("🧪 PERSISTENT MEMORY TEST GUIDE")
     print("=" * 50)
+    print()
 
-    # Create agent with memory capabilities
-    retry_config = types.HttpRetryOptions(
-        attempts=5, exp_base=7, initial_delay=1, http_status_codes=[429, 500, 503, 504]
-    )
+    # Check for API key
+    if not os.getenv("GOOGLE_API_KEY"):
+        print("❌ Please set your Google API key first:")
+        print("   export GOOGLE_API_KEY='your-api-key-here'")
+        print()
 
-    auto_save_callback = create_auto_save_callback(
-        memory_service, session_service, APP_NAME, USER_ID
-    )
+    print("📋 How to test persistent memory:")
+    print()
+    print("1️⃣  First run:")
+    print("   python3 memory_mgmt.py")
+    print("   → Tell the agent your name when prompted")
+    print()
 
-    agent = LlmAgent(
-        model=Gemini(model="gemini-2.5-flash-lite", retry_options=retry_config),
-        name="PersistentAgent",
-        instruction="""You are a helpful assistant with long-term memory.
+    print("2️⃣  Stop the script (Ctrl+C)")
+    print()
 
-IMPORTANT: When users ask about personal information (their name, preferences, etc.), 
-you MUST use the preload_memory tool to recall information from past conversations.
+    print("3️⃣  Run again:")
+    print("   python3 memory_mgmt.py")
+    print("   → Ask: 'What is my name?'")
+    print("   → Agent should remember! 🎉")
+    print()
 
-Always be friendly and use what you remember about the user to provide personalized responses.""",
-        tools=[preload_memory],
-        after_agent_callback=auto_save_callback,
-    )
+    print("🔧 Technical details:")
+    print("   • Sessions saved to: agent_sessions.db")
+    print("   • Memory auto-saved after each turn")
+    print("   • Uses persistent session ID: demo_user_main_session")
+    print("   • Agent has preload_memory tool for recall")
+    print()
 
-    runner = Runner(
-        agent=agent,
-        app_name=APP_NAME,
-        session_service=session_service,
-        memory_service=memory_service,
-    )
+    print("💡 Files to check:")
+    print("   • memory_mgmt.py - Main agent with persistent memory")
+    print("   • agent.py - CLI version with --dry-run mode")
+    print("   • STATEFUL_AGENT_GUIDE.md - Complete setup guide")
+    print()
 
-    # Check if this is the first run or a subsequent run
-    try:
-        existing_session = await session_service.get_session(
-            app_name=APP_NAME, user_id=USER_ID, session_id=PERSISTENT_SESSION_ID
-        )
-        is_first_run = len(existing_session.events) == 0
-    except:
-        is_first_run = True
-
-    if is_first_run:
-        print("👋 First time meeting! Tell me your name:")
-        await run_session(
-            runner,
-            "Hi there! My name is Sarah and I'm a software developer. Please remember this about me.",
-            PERSISTENT_SESSION_ID,
-        )
-    else:
-        print("👋 Welcome back! Let me see if I remember you...")
-        await run_session(
-            runner,
-            "Hi again! What's my name and what do you remember about me?",
-            PERSISTENT_SESSION_ID,
-        )
-
-    print("\n✅ Test completed!")
-    print(f"💾 Session data saved in: agent_sessions.db")
-    print(f"🔑 Session ID: {PERSISTENT_SESSION_ID}")
-    print("\n💡 To test persistence:")
-    print("   1. Run this script again - the agent should remember your name!")
-    print("   2. Or run: python3.12 my_agent/memory_mgmt.py")
+    print("🚀 Quick start:")
+    print("   python3 memory_mgmt.py")
+    print()
 
 
 if __name__ == "__main__":
-    # Check for API key
-    if not os.getenv("GOOGLE_API_KEY"):
-        print("❌ Please set your Google API key:")
-        print("   export GOOGLE_API_KEY='your-api-key-here'")
-        print("   python3.12 test_memory.py")
-        sys.exit(1)
-
-    asyncio.run(test_persistent_memory())
+    main()

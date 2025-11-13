@@ -1,0 +1,34 @@
+/opt/anaconda3/lib/python3.12/site-packages/google/adk/cli/fast_api.py:130: UserWarning: [EXPERIMENTAL] InMemoryCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  credential_service = InMemoryCredentialService()
+/opt/anaconda3/lib/python3.12/site-packages/google/adk/auth/credential_service/in_memory_credential_service.py:33: UserWarning: [EXPERIMENTAL] BaseCredentialService: This feature is experimental and may change or be removed in future versions without notice. It may introduce breaking changes at any time.
+  super().__init__()
+INFO:     Started server process [25407]
+INFO:     Waiting for application startup.
+
++-----------------------------------------------------------------------------+
+| ADK Web Server started                                                      |
+|                                                                             |
+| For local testing, access at http://127.0.0.1:8082.                         |
++-----------------------------------------------------------------------------+
+
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8082 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61316 - "GET / HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:61338 - "GET /?id=4d2650fb-27e5-49d5-bc52-aef22be43f68&vscodeBrowserReqId=1763058635067 HTTP/1.1" 307 Temporary Redirect
+INFO:     127.0.0.1:61338 - "GET /dev-ui/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61338 - "GET /dev-ui/chunk-2WH2EVR6.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61339 - "GET /dev-ui/polyfills-B6TNHZQ6.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61340 - "GET /dev-ui/main-OS2OH2S3.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61341 - "GET /dev-ui/styles-EVMPSV3U.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61340 - "GET /dev-ui/assets/config/runtime-config.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61340 - "GET /list-apps?relative_path=./ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61340 - "GET /dev-ui/assets/ADK-512-color.svg HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+
++-----------------------------------------------------------------------------+
+| ADK Web Server shutting down...                                             |
++-----------------------------------------------------------------------------+
+
+INFO:     Application shutdown complete.
+INFO:     Finished server process [25407]
